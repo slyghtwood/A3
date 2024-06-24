@@ -44,7 +44,7 @@ public class Jogo {
                 break;
         }
     }
-    void transformarElementos(char de, char para) {
+    public void transformarElementos(char de, char para) {
         for (int i = 0; i < tabuleiro.getTamanho(); i++) {
             for (int j = 0; j < tabuleiro.getTamanho(); j++) {
                 if (tabuleiro.tabuleiro[i][j] == de) {
