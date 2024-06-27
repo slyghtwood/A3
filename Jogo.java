@@ -1,57 +1,70 @@
 package num01;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Jogo {
+//NÃO MEXER
+public class Jogo implements Serializable{
+
     Jogador jogador1;
     Jogador jogador2;
     Tabuleiro tabuleiro;
+    Scanner scanner = new Scanner(System.in);
     Jogo(String nomeJogador1, String nomeJogador2) {
-        jogador1 = new Jogador();
-        jogador2 = new Jogador();
+        jogador1 = new Jogador(nomeJogador1);
+        jogador2 = new Jogador(nomeJogador2);
         tabuleiro = new Tabuleiro();
     }
     public void jogar() {
-        //while pra vida dos jogadores diferente de 0, se não acabar jogo
-    }
-    public void turno(){
-
-    }
-
-    public void aplicarEfeitoSimbolo(Jogador jogadorAtual, Jogador jogadorOponente, char simbolo) {
-        switch (simbolo) {
-            case '☠':
-                jogadorOponente.removeVida(1);
-                break;
-            case '$':
-                jogadorAtual.adicionaOuro(1);
-                break;
-            case '✚':
-                jogadorAtual.adicionaVida(1);
-                break;
-            case '☺':
-                //ver como colocar esse método no tabuleiro
-                transformarElementos('☠', '✚');
-                break;
-            case '☻':
-                transformarElementos('✚', '☠');
-                break;
-            case '☀':
-                jogadorOponente.setOuro(0);
-                break;
-            case '✦':
-                jogadorAtual.adicionaEXP(1);
-                break;
-        }
-    }
-    public void transformarElementos(char de, char para) {
-        for (int i = 0; i < tabuleiro.getTamanho(); i++) {
-            for (int j = 0; j < tabuleiro.getTamanho(); j++) {
-                if (tabuleiro.tabuleiro[i][j] == de) {
-                    tabuleiro.tabuleiro[i][j] = para;
-                }
+        while (jogador1.getVida() > 0 && jogador2.getVida() > 0) {
+            turno(jogador1, jogador2);
+            if (jogador2.getVida() > 0) {
+                turno(jogador2, jogador1);
             }
         }
+        System.out.println("FIM de jogo!!!!");
+        if (jogador1.getVida() > 0) {
+            System.out.println(jogador1.getNome() + " venceuuuu!");
+        } else {
+            System.out.println(jogador2.getNome() + " venceuuuu!");
+        }
     }
+    public void turno(Jogador jogadorAtual, Jogador jogadorOponente){
+        tabuleiro.mostrarTabuleiro();
+        System.out.println(jogadorAtual.getNome() + ", sua vez de jogar");
+        System.out.println(jogadorAtual);
+
+        boolean jogadaValida = false;
+        while (jogadaValida == false) {
+            System.out.println("Digite a posição por linha coluna (começa em 0) e a direção (w, a, s, d) para mover:");
+            int linha = scanner.nextInt();
+            int coluna = scanner.nextInt();
+            char direcao = scanner.next().charAt(0);
+
+            if (tabuleiro.validaJogada(linha, coluna, direcao)) {
+                tabuleiro.mexer(linha, coluna, direcao);
+                tabuleiro.verCombos();
+                aplicarEfeito(jogadorAtual, jogadorOponente, linha, coluna, direcao);
+                jogadaValida = true;
+            } else {
+                System.out.println("Jogada inválida! Tente novamente.");
+            }
+        }
+
+
+
+    }
+    void aplicarEfeito(Jogador jogadorAtual, Jogador jogadorOponente, int linha, int coluna, char direcao) {
+        int novaLinha = linha, novaColuna = coluna;
+        switch (direcao) {
+            case 'w': novaLinha--; break;
+            case 'a': novaColuna--; break;
+            case 's': novaLinha++; break;
+            case 'd': novaColuna++; break;
+        }
+        char elemento = tabuleiro.tabuleiro[novaLinha][novaColuna];
+        tabuleiro.aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, elemento);
+    }
+
 
 }

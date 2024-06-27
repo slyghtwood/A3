@@ -1,12 +1,13 @@
 package num01;
 
+//NÃO MEXER
 public class Jogador {
     private int vida;
     private int ouro;
     private int experiencia;
     private String nome;
 
-    public Jogador() {
+    public Jogador(String nome) {
         this.nome = nome;
         this.vida = 100;
         this.ouro = 0;

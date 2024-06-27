@@ -1,5 +1,7 @@
 package num01;
 import java.util.Random;
+
+//MEXER SE PRECISAR MUDAR ARQUIVOS
 public class Tabuleiro {
     public char[][] tabuleiro;
     public final char[] simbolos = {'☠', '$', '✚', '☺', '☻', '✦', '☀'};
@@ -21,10 +23,10 @@ public class Tabuleiro {
                     tabuleiro[l][c] = simbolos[random.nextInt(simbolos.length)];
                 }
             }
-        } while (tresAlinhados()); //enquanto não tiver 3 alinhados
+        } while (semTresAlinhados()); //enquanto não tiver 3 alinhados
 
     }
-    public boolean tresAlinhados() {
+    public boolean semTresAlinhados() {
         //horizontal, verfica se o anterior e o proximo são iguais ao escolhido
         for (int l = 0; l < tamanho; l++) {
             for (int c = 1; c < tamanho - 1; c++) {
@@ -41,8 +43,8 @@ public class Tabuleiro {
                 }
             }
         }
-        //retorna falso pq não deve ter 3 alinhados no começo
-        return false;
+
+        return true;
     }
     public void mostrarTabuleiro() {
         //só mostra o tabuleiro mesmo
@@ -90,7 +92,7 @@ public class Tabuleiro {
     }
     public void verCombos () {
         //esse while é pra n ter os 3 alinhados no começo
-        while (tresAlinhados()) {
+        while (semTresAlinhados()) {
             // vai até 5 pq compara com os 2 próximos
             for (int l = 0; l < tamanho; l++) {
                 for (int c = 0; c < tamanho; c++) {
@@ -110,6 +112,40 @@ public class Tabuleiro {
             }
         }
 
+    }
+    public void aplicarEfeitoSimbolo(Jogador jogadorAtual, Jogador jogadorOponente, char simbolo) {
+        switch (simbolo) {
+            case '☠':
+                jogadorOponente.removeVida(1);
+                break;
+            case '$':
+                jogadorAtual.adicionaOuro(1);
+                break;
+            case '✚':
+                jogadorAtual.adicionaVida(1);
+                break;
+            case '☺':
+                transformarElementos('☠', '✚');
+                break;
+            case '☻':
+                transformarElementos('✚', '☠');
+                break;
+            case '☀':
+                jogadorOponente.setOuro(0);
+                break;
+            case '✦':
+                jogadorAtual.adicionaEXP(1);
+                break;
+        }
+    }
+    public void transformarElementos(char de, char para) {
+        for (int l = 0; l < tamanho; l++) {
+            for (int c = 0; c < tamanho; c++) {
+                if (tabuleiro[l][c] == de) {
+                    tabuleiro[l][c] = para;
+                }
+            }
+        }
     }
 
 
