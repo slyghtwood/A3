@@ -31,7 +31,7 @@ public class Tabuleiro {
         for (int l = 0; l < tamanho; l++) {
             for (int c = 1; c < tamanho - 1; c++) {
                 if (tabuleiro[l][c] == tabuleiro[l][c - 1] && tabuleiro[l][c] == tabuleiro[l][c + 1]) {
-                    return false;
+                    return true;
                 }
             }
         }
@@ -39,12 +39,12 @@ public class Tabuleiro {
         for (int l = 1; l < tamanho - 1; l++) {
             for (int c = 0; c < tamanho; c++) {
                 if (tabuleiro[l - 1][c] == tabuleiro[l][c] && tabuleiro[l + 1][c] == tabuleiro[l][c]) {
-                    return false;
+                    return true;
                 }
             }
         }
 
-        return true;
+        return false;
     }
     public void mostrarTabuleiro() {
         //só mostra o tabuleiro mesmo
