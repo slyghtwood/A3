@@ -90,7 +90,7 @@ public class Tabuleiro {
         tabuleiro[novaLinha][novaColuna] = tabTemporario; //o antigo 1,3 virou 2,3
 
     }
-    public void verCombos () {
+    public void verCombos (Jogador jogadorAtual, Jogador jogadorOponente) {
         //esse while é pra n ter os 3 alinhados no começo
         while (semTresAlinhados()) {
             // vai até 5 pq compara com os 2 próximos
@@ -98,12 +98,14 @@ public class Tabuleiro {
                 for (int c = 0; c < tamanho; c++) {
                     if (c <= 5 && tabuleiro[l][c] == tabuleiro[l][c + 1] && tabuleiro[l][c] == tabuleiro[l][c + 2]) {
                         //substirui por aleatório
+                        aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
                         tabuleiro[l][c] = simbolos[random.nextInt(simbolos.length)];
                         tabuleiro[l][c + 1] = simbolos[random.nextInt(simbolos.length)];
                         tabuleiro[l][c + 2] = simbolos[random.nextInt(simbolos.length)];
                     }
                     if (l <= 5 && tabuleiro[l][c] == tabuleiro[l + 1][c] && tabuleiro[l][c] == tabuleiro[l + 2][c]) {
                         //substirui por aleatório
+                        aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
                         tabuleiro[l][c] = simbolos[random.nextInt(simbolos.length)];
                         tabuleiro[l + 1][c] = simbolos[random.nextInt(simbolos.length)];
                         tabuleiro[l + 2][c] = simbolos[random.nextInt(simbolos.length)];
@@ -113,6 +115,7 @@ public class Tabuleiro {
         }
 
     }
+
     public void aplicarEfeitoSimbolo(Jogador jogadorAtual, Jogador jogadorOponente, char simbolo) {
         switch (simbolo) {
             case '☠':

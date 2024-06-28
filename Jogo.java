@@ -36,23 +36,20 @@ public class Jogo implements Serializable{
 
         boolean jogadaValida = false;
         while (jogadaValida == false) {
-            System.out.println("Digite a posição por linha coluna (começa em 0) e a direção (w, a, s, d) para mover:");
+            System.out.println("Digite a posição por linha x coluna (começa em 0) e a direção (w, a, s, d) para mover:");
             int linha = scanner.nextInt();
             int coluna = scanner.nextInt();
             char direcao = scanner.next().charAt(0);
 
             if (tabuleiro.validaJogada(linha, coluna, direcao)) {
                 tabuleiro.mexer(linha, coluna, direcao);
-                tabuleiro.verCombos();
+                tabuleiro.verCombos(jogadorAtual, jogadorOponente);
                 aplicarEfeito(jogadorAtual, jogadorOponente, linha, coluna, direcao);
                 jogadaValida = true;
             } else {
                 System.out.println("Jogada inválida! Tente novamente.");
             }
         }
-
-
-
     }
     void aplicarEfeito(Jogador jogadorAtual, Jogador jogadorOponente, int linha, int coluna, char direcao) {
         int novaLinha = linha, novaColuna = coluna;
