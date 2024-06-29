@@ -1,9 +1,11 @@
 package num01;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Tabuleiro {
-    public char[][] tabuleiro;
+    public static char[][] tabuleiro;
     public final char[] simbolos = {'☠', '$', '✚', 'V', 'A', '✦', '☀'};
     public Random random;
     private final int tamanho = 8;
@@ -156,22 +158,23 @@ public class Tabuleiro {
             for (int c = 0; c < tamanho; c++) {
                 for (int l = tamanho - 1; l >= 0; l--) {
                     if (tabuleiro[l][c] == ' ') {
-                        int k = l;
-                        while (k >= 0 && tabuleiro[k][c] == ' ') {
+                        int k = l; //busca na posição atual
+                        while (k >= 0 && tabuleiro[k][c] == ' ') {//sobe enquanto encontrar espaços vazios
                             k--;
                         }
-                        if (k >= 0) {
-                            tabuleiro[l][c] = tabuleiro[k][c];
-                            tabuleiro[k][c] = ' ';
+                        if (k >= 0) { //pra achar um simbolo acima do vazio
+                            tabuleiro[l][c] = tabuleiro[k][c];// move o símbolo encontrado pra posição do espaço vazio
+                            tabuleiro[k][c] = ' '; //define a posição original do símbolo como vazia
                             houveMudanca = true;
                         } else {
-                            tabuleiro[l][c] = simbolos[random.nextInt(simbolos.length)];
+                            tabuleiro[l][c] = simbolos[random.nextInt(simbolos.length)];// preenche o vazio com símbolo aleatório
                         }
                     }
                 }
             }
         } while (houveMudanca);
 
+        //aplica a gravidade se tiver espaõ vazio
         while (verERemoverCombo(jogadorAtual, jogadorOponente)) {
             houveMudanca = true;
             aplicarGravidade(jogadorAtual, jogadorOponente);
@@ -213,6 +216,20 @@ public class Tabuleiro {
             case '✦':
                 jogadorAtual.adicionaEXP(1);
                 break;
+        }
+    }
+    //salvar os dados do tabuleiro
+    public static List<String> exportarDados() {
+        List<String> dadosTabuleiro = new ArrayList<>();
+        for (char[] linha : tabuleiro) {
+            dadosTabuleiro.add(new String(linha));
+        }
+        return dadosTabuleiro;
+    }
+    //mostrar os dados do tabuleiro quando for recuperar a partida
+    public void importarDados(List<String> dadosTabuleiro) {
+        for (int i = 0; i < tabuleiro.length; i++) {
+            tabuleiro[i] = dadosTabuleiro.get(i).toCharArray();
         }
     }
 }

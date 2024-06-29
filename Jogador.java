@@ -1,6 +1,8 @@
 package num01;
 
-//NÃO MEXER
+import java.util.ArrayList;
+import java.util.List;
+
 public class Jogador {
     private int vida;
     private int ouro;
@@ -38,5 +40,22 @@ public class Jogador {
                 "Vida: " + vida + "\n" +
                 "Ouro: " + ouro + "\n" +
                 "Experiência: " + experiencia + "\n";
+    }
+
+    //salvar as informações do jogador
+    public List<String> exportarDados() {
+        List<String> dadosJogador = new ArrayList<>();
+        dadosJogador.add(nome);
+        dadosJogador.add(String.valueOf(vida));
+        dadosJogador.add(String.valueOf(ouro));
+        dadosJogador.add(String.valueOf(experiencia));
+        return dadosJogador;
+    }
+    //pegar informações do jogador da partida anterior
+    public void importarDados(List<String> dadosJogador) {
+        this.nome = dadosJogador.get(0);
+        this.vida = Integer.parseInt(dadosJogador.get(1));
+        this.ouro = Integer.parseInt(dadosJogador.get(2));
+        this.experiencia = Integer.parseInt(dadosJogador.get(3));
     }
 }

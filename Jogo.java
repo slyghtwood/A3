@@ -1,10 +1,10 @@
 package num01;
-
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
-public class Jogo implements Serializable{
+public class Jogo {
 
     Jogador jogador1;
     Jogador jogador2;
@@ -46,7 +46,7 @@ public class Jogo implements Serializable{
                 aplicarEfeito(jogadorAtual, jogadorOponente, linha, coluna, direcao);
                 jogadaValida = true;
             } else {
-                System.out.println("Jogada inválida! Tente novamente.");
+                System.out.println("Jogada inválida. Tente novamente.");
             }
         }
     }
@@ -60,6 +60,41 @@ public class Jogo implements Serializable{
         }
         char elemento = tabuleiro.tabuleiro[novaLinha][novaColuna];
         tabuleiro.aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, elemento);
+    }
+    //aqui ta o método pra conseguir salvar e dps pegar os dados
+    public List<String> exportarDados() {
+        List<String> dadosJogo = new ArrayList<>();
+        dadosJogo.addAll(jogador1.exportarDados());
+        dadosJogo.addAll(jogador2.exportarDados());
+        dadosJogo.addAll(Tabuleiro.exportarDados());
+        return dadosJogo;
+    }
+    public static Jogo importarDados(List<String> dadosJogo) {
+        int offset = 0;
+
+        String nomeJogador1 = dadosJogo.get(offset++);
+        int vidaJogador1 = Integer.parseInt(dadosJogo.get(offset++));
+        int ouroJogador1 = Integer.parseInt(dadosJogo.get(offset++));
+        int expJogador1 = Integer.parseInt(dadosJogo.get(offset++));
+
+        String nomeJogador2 = dadosJogo.get(offset++);
+        int vidaJogador2 = Integer.parseInt(dadosJogo.get(offset++));
+        int ouroJogador2 = Integer.parseInt(dadosJogo.get(offset++));
+        int expJogador2 = Integer.parseInt(dadosJogo.get(offset++));
+
+        Jogo jogo = new Jogo(nomeJogador1, nomeJogador2);
+        jogo.jogador1.setVida(vidaJogador1);
+        jogo.jogador1.setOuro(ouroJogador1);
+        jogo.jogador1.setExperiencia(expJogador1);
+
+        jogo.jogador2.setVida(vidaJogador2);
+        jogo.jogador2.setOuro(ouroJogador2);
+        jogo.jogador2.setExperiencia(expJogador2);
+
+        List<String> dadosTabuleiro = dadosJogo.subList(offset, dadosJogo.size());
+        jogo.tabuleiro.importarDados(dadosTabuleiro);
+
+        return jogo;
     }
 
 
