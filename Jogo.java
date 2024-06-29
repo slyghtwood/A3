@@ -3,7 +3,7 @@ package num01;
 import java.io.Serializable;
 import java.util.Scanner;
 
-//NÃO MEXER
+
 public class Jogo implements Serializable{
 
     Jogador jogador1;
@@ -42,8 +42,7 @@ public class Jogo implements Serializable{
             char direcao = scanner.next().charAt(0);
 
             if (tabuleiro.validaJogada(linha, coluna, direcao)) {
-                tabuleiro.mexer(linha, coluna, direcao);
-                tabuleiro.verCombos(jogadorAtual, jogadorOponente);
+                tabuleiro.mexer(linha, coluna, direcao,jogadorAtual, jogadorOponente);
                 aplicarEfeito(jogadorAtual, jogadorOponente, linha, coluna, direcao);
                 jogadaValida = true;
             } else {

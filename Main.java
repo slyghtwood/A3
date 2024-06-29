@@ -1,6 +1,9 @@
 package num01;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -21,40 +24,12 @@ public class Main {
                     String nomeJogador2 = scanner.nextLine();
                     Jogo jogo = new Jogo(nomeJogador1, nomeJogador2);
                     jogo.jogar();
-                    System.out.println("---------Salvar o jogo? (s/n)");
-                    String opcaoo = scanner.next();
-                    if (opcaoo.equalsIgnoreCase("s")) {
-                        System.out.println("Digite o nome do arquivo para salvar:");
-                        String nomeArquivo = scanner.next();
-                        //BRENDAAAAAAAAAAAAAAAA
-                        //colocar a lógica q tu vai botar de salvar jogo
-                    }
+
                     break;
                 case 2:
-                    //BRENDAAAAAAAAAAAAAAAA
-                    //implementa o método de carregar jogo do menu
-                    /*try {
-                        Jogo jogoCarregado = carregarJogo(scanner);
-                        if (jogoCarregado != null) {
-                            jogoCarregado.jogar();
-                        } else {
-                            System.out.println("Erro ao carregar o jogo.");
-                        }
-                    } catch (IOException | ClassNotFoundException e) {
-                        System.out.println("Erro ao carregar o jogo: " + e.getMessage());
-                    }*/
 
                     break;
                 case 3:
-                    //BRENDAAAAAAAAAAAAAAAA
-                    //implementa método apagarjogo do menu
-                    /*
-                    try {
-                        apagarJogo(scanner);
-                    } catch (IOException e) {
-                        System.out.println("Erro ao apagar o jogo: " + e.getMessage());
-                    }
-                    */
 
                     break;
                 case 4:
@@ -65,6 +40,4 @@ public class Main {
             }
         }
     }
-
-
 }

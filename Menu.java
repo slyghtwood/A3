@@ -1,10 +1,10 @@
 package num01;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
 public class Menu {
+
     public static void menuMenuzao() {
         System.out.println("---------Menu---------");
         System.out.println("1. Nova partida");
@@ -13,9 +13,6 @@ public class Menu {
         System.out.println("4. Sair do jogo");
         System.out.println("-----------------------");
     }
-
-    //BRENDAAAAAAAAAAAAAAAA
-   //métodos q precisa colocar: salvar jogo, carregar jogo, deletar jogo e lista de jogos salvos
 
 
 }

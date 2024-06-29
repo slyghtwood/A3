@@ -23,12 +23,8 @@ public class Jogador {
     public int getExperiencia() {return experiencia;}
     public void setExperiencia(int experiencia) {this.experiencia = experiencia;}
 
-    public int adicionaVida(int quant){
-        return vida += quant;
-    }
-    public int removeVida(int quant){
-        return vida -= quant;
-    }
+    public int adicionaVida(int quant){return vida = vida + quant;}
+    public int removeVida(int quant){return vida = vida - quant;}
     public int adicionaOuro(int quant){
         return ouro += quant;
     }

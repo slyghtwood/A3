@@ -1,33 +1,36 @@
 package num01;
+
 import java.util.Random;
 
-//MEXER SE PRECISAR MUDAR ARQUIVOS
 public class Tabuleiro {
     public char[][] tabuleiro;
-    public final char[] simbolos = {'☠', '$', '✚', '☺', '☻', '✦', '☀'};
+    public final char[] simbolos = {'☠', '$', '✚', 'V', 'A', '✦', '☀'};
     public Random random;
     private final int tamanho = 8;
 
-    public int getTamanho() {return tamanho;}
+    public int getTamanho() {
+        return tamanho;
+    }
 
-    Tabuleiro(){
+    Tabuleiro() {
         tabuleiro = new char[tamanho][tamanho];
         random = new Random();
         iniciar();
     }
-    public void iniciar(){
+
+    public void iniciar() {
         do {
-            //cria uma matriz 8 x 8 aleatóriamente
+            // Cria uma matriz 8 x 8 aleatoriamente
             for (int l = 0; l < tamanho; l++) {
                 for (int c = 0; c < tamanho; c++) {
                     tabuleiro[l][c] = simbolos[random.nextInt(simbolos.length)];
                 }
             }
-        } while (semTresAlinhados()); //enquanto não tiver 3 alinhados
-
+        } while (semTresAlinhados()); // Enquanto não tiver 3 alinhados
     }
+
     public boolean semTresAlinhados() {
-        //horizontal, verfica se o anterior e o proximo são iguais ao escolhido
+        // Horizontal, verifica se o anterior e o próximo são iguais ao escolhido
         for (int l = 0; l < tamanho; l++) {
             for (int c = 1; c < tamanho - 1; c++) {
                 if (tabuleiro[l][c] == tabuleiro[l][c - 1] && tabuleiro[l][c] == tabuleiro[l][c + 1]) {
@@ -35,7 +38,7 @@ public class Tabuleiro {
                 }
             }
         }
-        //vertical, verfica se o anterior e o proximo são iguais ao escolhido
+        // Vertical, verifica se o anterior e o próximo são iguais ao escolhido
         for (int l = 1; l < tamanho - 1; l++) {
             for (int c = 0; c < tamanho; c++) {
                 if (tabuleiro[l - 1][c] == tabuleiro[l][c] && tabuleiro[l + 1][c] == tabuleiro[l][c]) {
@@ -46,8 +49,9 @@ public class Tabuleiro {
 
         return false;
     }
+
     public void mostrarTabuleiro() {
-        //só mostra o tabuleiro mesmo
+        // Mostra o tabuleiro
         for (int l = 0; l < tamanho; l++) {
             for (int c = 0; c < tamanho; c++) {
                 System.out.printf("%c ", tabuleiro[l][c]);
@@ -55,65 +59,123 @@ public class Tabuleiro {
             System.out.println();
         }
     }
-    public boolean validaJogada (int linha, int coluna, char direcao) {
-        //ve se o lugar escolhido existe na matriz
-            switch (direcao) {
-                //retorna true caso tudo estiver certo
-                case 'w': return linha > 0;
-                case 'a': return coluna > 0;
-                case 's': return linha < tamanho - 1;
-                case 'd': return coluna < tamanho - 1;
-                //retorna falso se alguma jogada não existir na matriz
-                default: return false;
-           }
 
-    }
-    public void mexer(int linhaa, int colunaa, char direcaoo){
-        //ex: linhaa= 2, colunaa = 3, direcao = w
-        int novaLinha = linhaa;
-        int novaColuna = colunaa;
-        switch (direcaoo) {
-            //move 1, depende do lado
+    public boolean validaJogada(int linha, int coluna, char direcao) {
+        // Verifica se o lugar escolhido existe na matriz
+        switch (direcao) {
             case 'w':
-                novaLinha--; break;
-                //ex: novo é linha 1 e coluna 3
+                return linha > 0;
             case 'a':
-                novaColuna--; break;
+                return coluna > 0;
             case 's':
-                novaLinha++; break;
+                return linha < tamanho - 1;
             case 'd':
-                novaColuna++; break;
+                return coluna < tamanho - 1;
+            default:
+                return false;
         }
-        //Trocar os elementos
-        char tabTemporario = tabuleiro[linhaa][colunaa]; //ex: antigo 2,3. Cria um novo pra poder fazer a troca
-        tabuleiro[linhaa][colunaa] = tabuleiro[novaLinha][novaColuna];//ex: deixou o antigo 2,3 igual ao novo 1,3
-        tabuleiro[novaLinha][novaColuna] = tabTemporario; //o antigo 1,3 virou 2,3
-
     }
-    public void verCombos (Jogador jogadorAtual, Jogador jogadorOponente) {
-        //esse while é pra n ter os 3 alinhados no começo
-        while (semTresAlinhados()) {
-            // vai até 5 pq compara com os 2 próximos
-            for (int l = 0; l < tamanho; l++) {
-                for (int c = 0; c < tamanho; c++) {
-                    if (c <= 5 && tabuleiro[l][c] == tabuleiro[l][c + 1] && tabuleiro[l][c] == tabuleiro[l][c + 2]) {
-                        //substirui por aleatório
-                        aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
-                        tabuleiro[l][c] = simbolos[random.nextInt(simbolos.length)];
-                        tabuleiro[l][c + 1] = simbolos[random.nextInt(simbolos.length)];
-                        tabuleiro[l][c + 2] = simbolos[random.nextInt(simbolos.length)];
-                    }
-                    if (l <= 5 && tabuleiro[l][c] == tabuleiro[l + 1][c] && tabuleiro[l][c] == tabuleiro[l + 2][c]) {
-                        //substirui por aleatório
-                        aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
-                        tabuleiro[l][c] = simbolos[random.nextInt(simbolos.length)];
-                        tabuleiro[l + 1][c] = simbolos[random.nextInt(simbolos.length)];
-                        tabuleiro[l + 2][c] = simbolos[random.nextInt(simbolos.length)];
-                    }
+
+    public void mexer(int linha, int coluna, char direcao, Jogador jogadorAtual, Jogador jogadorOponente) {
+        int novaLinha = linha;
+        int novaColuna = coluna;
+        //muda a direção de 1 em 1, w a s d
+        switch (direcao) {
+            case 'w':
+                novaLinha--;
+                break;
+            case 'a':
+                novaColuna--;
+                break;
+            case 's':
+                novaLinha++;
+                break;
+            case 'd':
+                novaColuna++;
+                break;
+        }
+        // Trocar os elementos
+        char temp = tabuleiro[linha][coluna];
+        tabuleiro[linha][coluna] = tabuleiro[novaLinha][novaColuna];
+        tabuleiro[novaLinha][novaColuna] = temp;
+        while (verERemoverCombo(jogadorAtual, jogadorOponente)) {
+            aplicarGravidade(jogadorAtual, jogadorOponente);
+        }
+    }
+
+    private boolean verERemoverCombo(Jogador jogadorAtual, Jogador jogadorOponente) {
+        boolean temCombinacao = false;
+        boolean[][] paraRemover = new boolean[tamanho][tamanho];
+
+        //até -2 pq ele compara com próximos 2
+        for (int l = 0; l < tamanho; l++) {
+            for (int c = 0; c < tamanho - 2; c++) {
+                //ve se tem igual na horizontal
+                if (tabuleiro[l][c] == tabuleiro[l][c + 1] && tabuleiro[l][c] == tabuleiro[l][c + 2]) {
+                    //diz onde tem q remover
+                    paraRemover[l][c] = paraRemover[l][c + 1] = paraRemover[l][c + 2] = true;
+                    temCombinacao = true;
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
                 }
             }
         }
 
+        //até -2 pq ele compara com próximos 2
+        for (int l = 0; l < tamanho - 2; l++) {
+            for (int c = 0; c < tamanho; c++) {
+                //ve se tem igual na vertical
+                if (tabuleiro[l][c] == tabuleiro[l + 1][c] && tabuleiro[l][c] == tabuleiro[l + 2][c]) {
+                    //diz onde tem q remover
+                    paraRemover[l][c] = paraRemover[l + 1][c] = paraRemover[l + 2][c] = true;
+                    temCombinacao = true;
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                }
+            }
+        }
+
+        //remove os simbolos se fizer combo, tranforma num espaço vazio
+        for (int l = 0; l < tamanho; l++) {
+            for (int c = 0; c < tamanho; c++) {
+                if (paraRemover[l][c]) {
+                    tabuleiro[l][c] = ' ';
+                }
+            }
+        }
+
+        return temCombinacao;
+    }
+
+    private void aplicarGravidade(Jogador jogadorAtual, Jogador jogadorOponente) {
+        boolean houveMudanca;
+        do {
+            houveMudanca = false;
+            for (int c = 0; c < tamanho; c++) {
+                for (int l = tamanho - 1; l >= 0; l--) {
+                    if (tabuleiro[l][c] == ' ') {
+                        int k = l;
+                        while (k >= 0 && tabuleiro[k][c] == ' ') {
+                            k--;
+                        }
+                        if (k >= 0) {
+                            tabuleiro[l][c] = tabuleiro[k][c];
+                            tabuleiro[k][c] = ' ';
+                            houveMudanca = true;
+                        } else {
+                            tabuleiro[l][c] = simbolos[random.nextInt(simbolos.length)];
+                        }
+                    }
+                }
+            }
+        } while (houveMudanca);
+
+        while (verERemoverCombo(jogadorAtual, jogadorOponente)) {
+            houveMudanca = true;
+            aplicarGravidade(jogadorAtual, jogadorOponente);
+        }
     }
 
     public void aplicarEfeitoSimbolo(Jogador jogadorAtual, Jogador jogadorOponente, char simbolo) {
@@ -127,11 +189,23 @@ public class Tabuleiro {
             case '✚':
                 jogadorAtual.adicionaVida(1);
                 break;
-            case '☺':
-                transformarElementos('☠', '✚');
+            case 'V':
+                for (int l = 0; l < tamanho; l++) {
+                    for (int c = 0; c < tamanho; c++) {
+                        if (tabuleiro[l][c] == '☠') {
+                            tabuleiro[l][c] = '✚';
+                        }
+                    }
+                }
                 break;
-            case '☻':
-                transformarElementos('✚', '☠');
+            case 'A':
+                for (int l = 0; l < tamanho; l++) {
+                    for (int c = 0; c < tamanho; c++) {
+                        if (tabuleiro[l][c] == '✚') {
+                            tabuleiro[l][c] = '☠';
+                        }
+                    }
+                }
                 break;
             case '☀':
                 jogadorOponente.setOuro(0);
@@ -141,16 +215,4 @@ public class Tabuleiro {
                 break;
         }
     }
-    public void transformarElementos(char de, char para) {
-        for (int l = 0; l < tamanho; l++) {
-            for (int c = 0; c < tamanho; c++) {
-                if (tabuleiro[l][c] == de) {
-                    tabuleiro[l][c] = para;
-                }
-            }
-        }
-    }
-
-
 }
-
