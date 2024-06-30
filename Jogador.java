@@ -1,4 +1,4 @@
-package num01;
+package Oficial;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +8,14 @@ public class Jogador {
     private int ouro;
     private int experiencia;
     private String nome;
+    private int jogadasExtras;
 
     public Jogador(String nome) {
         this.nome = nome;
         this.vida = 100;
         this.ouro = 0;
         this.experiencia = 0;
+        this.jogadasExtras = 0;
     }
 
     public String getNome() {return nome;}
@@ -32,6 +34,13 @@ public class Jogador {
     }
     public int adicionaEXP(int quant){
         return experiencia += quant;
+    }
+    public void ganharJogadaExtra() {jogadasExtras++;}
+    public boolean temJogadaExtra() {return jogadasExtras > 0;}
+    public void usarJogadaExtra() {
+        if (temJogadaExtra()) {
+            jogadasExtras--;
+        }
     }
 
     @Override

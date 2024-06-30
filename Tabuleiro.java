@@ -1,4 +1,4 @@
-package num01;
+package Oficial;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +100,7 @@ public class Tabuleiro {
         char temp = tabuleiro[linha][coluna];
         tabuleiro[linha][coluna] = tabuleiro[novaLinha][novaColuna];
         tabuleiro[novaLinha][novaColuna] = temp;
+        //coloca combo e gravidade
         while (verERemoverCombo(jogadorAtual, jogadorOponente)) {
             aplicarGravidade(jogadorAtual, jogadorOponente);
         }
@@ -108,14 +109,53 @@ public class Tabuleiro {
     private boolean verERemoverCombo(Jogador jogadorAtual, Jogador jogadorOponente) {
         boolean temCombinacao = false;
         boolean[][] paraRemover = new boolean[tamanho][tamanho];
+        boolean ganhouJogadaExtra = false;
 
-        //até -2 pq ele compara com próximos 2
+        //até -3 pq ele compara com próximos 3, só pra combo de 4
+        for (int l = 0; l < tamanho; l++) {
+            for (int c = 0; c < tamanho - 3; c++) {
+                //ve se tem igual na horizontal
+                if (tabuleiro[l][c] == tabuleiro[l][c + 1] && tabuleiro[l][c] == tabuleiro[l][c + 2] && tabuleiro[l][c] == tabuleiro[l][c + 3]) {
+                    //diz onde tem q remover
+                    paraRemover[l][c] = paraRemover[l][c + 1] = paraRemover[l][c + 2] = paraRemover[l][c + 3] = true;
+                    temCombinacao = true;
+                    //aplica jogada extra
+                    ganhouJogadaExtra = true;
+                    //aplica combo
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                }
+            }
+        }
+
+        //até -3 pq ele compara com próximos 3, só pra combo de 4
+        for (int l = 0; l < tamanho - 3; l++) {
+            for (int c = 0; c < tamanho; c++) {
+                //ve se tem igual na vertical
+                if (tabuleiro[l][c] == tabuleiro[l + 1][c] && tabuleiro[l][c] == tabuleiro[l + 2][c] && tabuleiro[l][c] == tabuleiro[l + 3][c]) {
+                    //diz onde tem q remover
+                    paraRemover[l][c] = paraRemover[l + 1][c] = paraRemover[l + 2][c] = paraRemover[l + 3][c] = true;
+                    temCombinacao = true;
+                    //aplica jogada extra
+                    ganhouJogadaExtra = true;
+                    //aplica combo
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                    aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
+                }
+            }
+        }
+
+        //verifica combinações de 3 símbolos (horizontal e vertical)
         for (int l = 0; l < tamanho; l++) {
             for (int c = 0; c < tamanho - 2; c++) {
-                //ve se tem igual na horizontal
                 if (tabuleiro[l][c] == tabuleiro[l][c + 1] && tabuleiro[l][c] == tabuleiro[l][c + 2]) {
                     //diz onde tem q remover
                     paraRemover[l][c] = paraRemover[l][c + 1] = paraRemover[l][c + 2] = true;
+                    //aplica combo
                     temCombinacao = true;
                     aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
                     aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
@@ -124,13 +164,12 @@ public class Tabuleiro {
             }
         }
 
-        //até -2 pq ele compara com próximos 2
         for (int l = 0; l < tamanho - 2; l++) {
             for (int c = 0; c < tamanho; c++) {
-                //ve se tem igual na vertical
                 if (tabuleiro[l][c] == tabuleiro[l + 1][c] && tabuleiro[l][c] == tabuleiro[l + 2][c]) {
                     //diz onde tem q remover
                     paraRemover[l][c] = paraRemover[l + 1][c] = paraRemover[l + 2][c] = true;
+                    //aplica combo
                     temCombinacao = true;
                     aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
                     aplicarEfeitoSimbolo(jogadorAtual, jogadorOponente, tabuleiro[l][c]);
@@ -148,13 +187,19 @@ public class Tabuleiro {
             }
         }
 
+        //adiciona jogada extra
+        if (ganhouJogadaExtra) {
+            jogadorAtual.ganharJogadaExtra();
+        }
+
         return temCombinacao;
     }
 
+
     private void aplicarGravidade(Jogador jogadorAtual, Jogador jogadorOponente) {
-        boolean houveMudanca;
+        boolean teveMudanca;
         do {
-            houveMudanca = false;
+            teveMudanca = false;
             for (int c = 0; c < tamanho; c++) {
                 for (int l = tamanho - 1; l >= 0; l--) {
                     if (tabuleiro[l][c] == ' ') {
@@ -165,18 +210,18 @@ public class Tabuleiro {
                         if (k >= 0) { //pra achar um simbolo acima do vazio
                             tabuleiro[l][c] = tabuleiro[k][c];// move o símbolo encontrado pra posição do espaço vazio
                             tabuleiro[k][c] = ' '; //define a posição original do símbolo como vazia
-                            houveMudanca = true;
+                            teveMudanca = true;
                         } else {
                             tabuleiro[l][c] = simbolos[random.nextInt(simbolos.length)];// preenche o vazio com símbolo aleatório
                         }
                     }
                 }
             }
-        } while (houveMudanca);
+        } while (teveMudanca);
 
         //aplica a gravidade se tiver espaõ vazio
         while (verERemoverCombo(jogadorAtual, jogadorOponente)) {
-            houveMudanca = true;
+            teveMudanca = true;
             aplicarGravidade(jogadorAtual, jogadorOponente);
         }
     }

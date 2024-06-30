@@ -1,10 +1,7 @@
-package num01;
+package Oficial;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
+import static Oficial.Menu.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,60 +24,34 @@ public class Main {
                     System.out.println("---------Salvar o jogo? (s/n)");
                     String opcaoSalvar = scanner.next();
                     if (opcaoSalvar.equalsIgnoreCase("s")) {
-                        System.out.println("Digite o nome do arquivo para salvar:");
+                        System.out.println("---------Digite o nome do arquivo para salvar:");
                         String nomeArquivo = scanner.next();
                         salvarJogo(jogo, nomeArquivo);
                     }
                     break;
                 case 2:
-                    System.out.println("Digite o nome do arquivo para carregar:");
+                    System.out.println("---------Digite o nome do arquivo para carregar:");
                     String nomeArquivoCarregar = scanner.next();
                     Jogo jogoCarregado = carregarJogo(nomeArquivoCarregar);
                     if (jogoCarregado != null) {
                         jogoCarregado.jogar();
                     } else {
-                        System.out.println("Erro ao carregar o jogo.");
+                        System.out.println("✘✘✘Erro ao carregar o jogo.");
                     }
                     break;
                 case 3:
-                    System.out.println("Digite o nome do arquivo para apagar:");
+                    System.out.println("---------Digite o nome do arquivo para apagar:");
                     String nomeArquivoApagar = scanner.next();
                     apagarJogo(nomeArquivoApagar);
                     break;
                 case 4:
                     System.out.println("--------- Saindo do jogo...");
+                    System.exit(0);
                     return;
                 default:
                     System.out.println("✘✘✘ Opção inválida! Tente novamente.");
             }
         }
     }
-    public static void salvarJogo(Jogo jogo, String nomeArquivo) {
-        List<String> dadosJogo = jogo.exportarDados();
-        try {
-            Files.write(Paths.get(nomeArquivo), dadosJogo);
-            System.out.println("Jogo salvo com sucesso!");
-        } catch (IOException e) {
-            System.err.println("Erro ao salvar o jogo: " + e.getMessage());
-        }
-    }
 
-    public static Jogo carregarJogo(String nomeArquivo) {
-        try {
-            List<String> dadosJogo = Files.readAllLines(Paths.get(nomeArquivo));
-            return Jogo.importarDados(dadosJogo);
-        } catch (IOException e) {
-            System.err.println("Erro ao carregar o jogo: " + e.getMessage());
-            return null;
-        }
-    }
-
-    public static void apagarJogo(String nomeArquivo) {
-        try {
-            Files.deleteIfExists(Paths.get(nomeArquivo));
-            System.out.println("Jogo apagado com sucesso!");
-        } catch (IOException e) {
-            System.err.println("Erro ao apagar o jogo: " + e.getMessage());
-        }
-    }
 }
