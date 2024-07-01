@@ -237,7 +237,7 @@ public class Tabuleiro {
             case '✚':
                 jogadorAtual.adicionaVida(1);
                 break;
-            case 'V':
+            case 'V': //vermelho
                 for (int l = 0; l < tamanho; l++) {
                     for (int c = 0; c < tamanho; c++) {
                         if (tabuleiro[l][c] == '☠') {
@@ -246,7 +246,7 @@ public class Tabuleiro {
                     }
                 }
                 break;
-            case 'A':
+            case 'A': //azul
                 for (int l = 0; l < tamanho; l++) {
                     for (int c = 0; c < tamanho; c++) {
                         if (tabuleiro[l][c] == '✚') {
@@ -255,10 +255,10 @@ public class Tabuleiro {
                     }
                 }
                 break;
-            case '☀':
+            case '☀': //amarelo
                 jogadorOponente.setOuro(0);
                 break;
-            case '✦':
+            case '✦': //roxo
                 jogadorAtual.adicionaEXP(1);
                 break;
         }
